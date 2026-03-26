@@ -4,27 +4,63 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ระบบแจ้งซ่อม - เข้าสู่ระบบ</title>
+  <title>ระบบแจ้งซ่อม - เข้าสู่ระบบ (iMaintain)</title>
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'IBM Plex Sans Thai', 'sans-serif'],
+          },
+          colors: {
+            primary: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1', // Indigo 500
+              600: '#4f46e5', // Indigo 600
+            }
+          }
+        }
+      }
+    }
+  </script>
+
   <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
-  <div id="root"></div>
+<body class="text-slate-800 antialiased min-h-screen relative">
+  
+  <div class="aurora-bg">
+    <div class="aurora-blob aurora-blob-1"></div>
+    <div class="aurora-blob aurora-blob-2"></div>
+    <div class="aurora-blob aurora-blob-3"></div>
+  </div>
+
+  <div id="root" class="relative z-10 w-full min-h-screen flex items-center justify-center p-4"></div>
 
   <script src="js/code.js"></script>
   <script src="js/auth.js"></script>
+  
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // If already logged in, redirect to respective role page
-      if (APP.user && localStorage.getItem('APP_TOKEN')) {
+      // ตรวจสอบว่ามี Token และ User ในระบบหรือไม่
+      if (window.APP && APP.user && localStorage.getItem('APP_TOKEN')) {
+        // ถ้ามีให้ Redirect ไปหน้าตาม Role ทันที
         window.location.href = `${APP.user.role}.html`;
       } else {
-        showAuth();
+        // ถ้าไม่มี ให้เรียกฟังก์ชันโชว์หน้า Login/Register จาก auth.js
+        if(typeof showAuth === 'function') {
+          showAuth();
+        } else {
+          console.error("ไม่พบฟังก์ชัน showAuth() โปรดตรวจสอบไฟล์ auth.js");
+        }
       }
     });
   </script>
