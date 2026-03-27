@@ -9,7 +9,7 @@
 
 | รหัสนักศึกษา | ชื่อ-นามสกุล              | ตำแหน่ง                     | 
 |---------------|----------------------------|-----------------------------|
-| 68030282      | นายศุภโชค หอมสมบัติ       | Development Manager         |
+| 68030282      | นายศุภโชค หอมสมบัติ       | Development Manager/Backend Developer         |
 | 68030263      | นายวสุรัชต์ สมเด็จ         | Backend Developer           |
 | 68030265      | นายวัฒนพงศ์ พรหมภิราม    | UI/UX Design & Front-End  หน้า Technichain Manager  |
 | 68030258      | นางสาววรัทยา รอดเมล์     | UI/UX Design & Front-End  หน้า Admin  |
