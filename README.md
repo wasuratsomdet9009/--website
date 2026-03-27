@@ -215,36 +215,40 @@ graph TD
 ระบบรองรับ 4 บทบาทหลักที่มีสิทธิ์การใช้งานแตกต่างกัน
 
 ```mermaid
-useCaseDiagram
-    actor "User" as U
-    actor "Technician" as T
-    actor "Manager" as M
-    actor "Admin" as A
+flowchart LR
+    %% Actors (ใช้รูปวงกลมแทน)
+    U((User))
+    T((Technician))
+    M((Manager))
+    A((Admin))
 
-    package "ระบบแจ้งซ่อม" {
-        usecase "แจ้งซ่อมใหม่ (Submit Request)" as UC1
-        usecase "ติดตามสถานะ (Track Status)" as UC2
-        usecase "ประเมินความพึงพอใจ (Evaluate)" as UC3
-        usecase "อัปเดตงานซ่อม (Fix & Update)" as UC4
-        usecase "เบิกวัสดุอุปกรณ์ (Withdraw Materials)" as UC5
-        usecase "มอบหมายงาน (Assign Task)" as UC6
-        usecase "จัดการใบจัดซื้อ (PO Management)" as UC7
-        usecase "ดูรายงานสรุป (Dashboard & Reports)" as UC8
-        usecase "จัดการผู้ใช้และสิทธิ์ (User Mgmt)" as UC9
-    }
+    %% System Boundary (ใช้ Subgraph แทน Package)
+    subgraph System ["ระบบแจ้งซ่อม"]
+        direction TB
+        UC1(["แจ้งซ่อมใหม่ (Submit Request)"])
+        UC2(["ติดตามสถานะ (Track Status)"])
+        UC3(["ประเมินความพึงพอใจ (Evaluate)"])
+        UC4(["อัปเดตงานซ่อม (Fix & Update)"])
+        UC5(["เบิกวัสดุอุปกรณ์ (Withdraw Materials)"])
+        UC6(["มอบหมายงาน (Assign Task)"])
+        UC7(["จัดการใบจัดซื้อ (PO Management)"])
+        UC8(["ดูรายงานสรุป (Dashboard & Reports)"])
+        UC9(["จัดการผู้ใช้และสิทธิ์ (User Mgmt)"])
+    end
 
+    %% Relationships
     U --> UC1
     U --> UC2
     U --> UC3
-    
+
     T --> UC4
     T --> UC5
     T --> UC2
-    
+
     M --> UC6
     M --> UC7
     M --> UC8
-    
+
     A --> UC9
     A --> UC8
     A --> UC6
@@ -254,21 +258,31 @@ useCaseDiagram
 กระบวนการทำงานตั้งแต่เริ่มจนจบงานซ่อม
 
 ```mermaid
-activityDiagram
-    start
-    :User: แจ้งซ่อมผ่านระบบ;
-    :System: ส่ง Notification หา Manager;
-    if (เปิด Auto-Assign?) then (ใช่)
-        :System: มอบหมายช่างที่มีงานน้อยที่สุดอัตโนมัติ;
-    else (ไม่)
-        :Manager: มอบหมายงานให้ช่างด้วยตนเอง;
-    endif
-    :Technician: รับงานและเริ่มดำเนินการ;
-    :Technician: เบิกวัสดุจากคลัง (ถ้ามี);
-    :Technician: อัปเดตรูปถ่าย (ก่อน/หลัง) และสถานะ;
-    :System: แจ้งเตือน User เมื่อเสร็จสิ้น;
-    :User: ประเมินความพึงพอใจ;
-    stop
+flowchart TD
+    %% จุดเริ่มต้น
+    Start([เริ่มต้น]) --> Step1
+    
+    %% ขั้นตอนการทำงาน
+    Step1["User: แจ้งซ่อมผ่านระบบ"] --> Step2
+    Step2["System: ส่ง Notification หา Manager"] --> Decision
+    
+    %% เงื่อนไข (Decision)
+    Decision{"เปิด Auto-Assign?"}
+    Decision -- "ใช่" --> Step3A["System: มอบหมายช่างที่มีงานน้อยที่สุดอัตโนมัติ"]
+    Decision -- "ไม่" --> Step3B["Manager: มอบหมายงานให้ช่างด้วยตนเอง"]
+    
+    %% รวมเส้นทางกลับมาทำงานต่อ
+    Step3A --> Step4
+    Step3B --> Step4
+    
+    Step4["Technician: รับงานและเริ่มดำเนินการ"] --> Step5
+    Step5["Technician: เบิกวัสดุจากคลัง (ถ้ามี)"] --> Step6
+    Step6["Technician: อัปเดตรูปถ่าย (ก่อน/หลัง) และสถานะ"] --> Step7
+    Step7["System: แจ้งเตือน User เมื่อเสร็จสิ้น"] --> Step8
+    Step8["User: ประเมินความพึงพอใจ"] --> Stop
+    
+    %% จุดสิ้นสุด
+    Stop([สิ้นสุด])
 ```
 
 ### 5.4 ER Diagram (Database Schema) 📊
