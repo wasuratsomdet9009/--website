@@ -289,46 +289,91 @@ flowchart TD
 โครงสร้างข้อมูลบน **NoSQL Firestore**
 
 ```mermaid
-erDiagram
-    USERS {
-        string id PK
-        string email
-        string password
-        string role
-        string department
-    }
-    REPAIR_REQUESTS {
-        string id PK
-        string tracking_id
-        string status
-        string category
-        string urgency
-        timestamp created_at
-    }
-    MATERIALS {
-        string id PK
-        string name
-        int quantity
-        float unit_price
-        date expiry_date
-    }
-    PURCHASE_ORDERS {
-        string id PK
-        string code
-        string status
-        float total_amount
-    }
-    EVALUATIONS {
-        string id PK
-        string request_id FK
-        int score
-        string comment
-    }
-
-    USERS ||--o{ REPAIR_REQUESTS : "notifies"
-    REPAIR_REQUESTS ||--o{ MATERIALS : "uses"
-    REPAIR_REQUESTS ||--o| EVALUATIONS : "has"
-    USERS ||--o{ PURCHASE_ORDERS : "manages"
+{
+  "er_diagram": {
+    "entities": [
+      {
+        "name": "USERS",
+        "attributes": [
+          { "name": "id", "type": "string", "isPrimaryKey": true },
+          { "name": "email", "type": "string", "isPrimaryKey": false },
+          { "name": "password", "type": "string", "isPrimaryKey": false },
+          { "name": "role", "type": "string", "isPrimaryKey": false },
+          { "name": "department", "type": "string", "isPrimaryKey": false }
+        ]
+      },
+      {
+        "name": "REPAIR_REQUESTS",
+        "attributes": [
+          { "name": "id", "type": "string", "isPrimaryKey": true },
+          { "name": "tracking_id", "type": "string", "isPrimaryKey": false },
+          { "name": "status", "type": "string", "isPrimaryKey": false },
+          { "name": "category", "type": "string", "isPrimaryKey": false },
+          { "name": "urgency", "type": "string", "isPrimaryKey": false },
+          { "name": "created_at", "type": "timestamp", "isPrimaryKey": false }
+        ]
+      },
+      {
+        "name": "MATERIALS",
+        "attributes": [
+          { "name": "id", "type": "string", "isPrimaryKey": true },
+          { "name": "name", "type": "string", "isPrimaryKey": false },
+          { "name": "quantity", "type": "int", "isPrimaryKey": false },
+          { "name": "unit_price", "type": "float", "isPrimaryKey": false },
+          { "name": "expiry_date", "type": "date", "isPrimaryKey": false }
+        ]
+      },
+      {
+        "name": "PURCHASE_ORDERS",
+        "attributes": [
+          { "name": "id", "type": "string", "isPrimaryKey": true },
+          { "name": "code", "type": "string", "isPrimaryKey": false },
+          { "name": "status", "type": "string", "isPrimaryKey": false },
+          { "name": "total_amount", "type": "float", "isPrimaryKey": false }
+        ]
+      },
+      {
+        "name": "EVALUATIONS",
+        "attributes": [
+          { "name": "id", "type": "string", "isPrimaryKey": true },
+          { "name": "request_id", "type": "string", "isPrimaryKey": false, "isForeignKey": true },
+          { "name": "score", "type": "int", "isPrimaryKey": false },
+          { "name": "comment", "type": "string", "isPrimaryKey": false }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "source": "USERS",
+        "target": "REPAIR_REQUESTS",
+        "type": "one-to-many",
+        "symbol": "||--o{",
+        "label": "notifies"
+      },
+      {
+        "source": "REPAIR_REQUESTS",
+        "target": "MATERIALS",
+        "type": "one-to-many",
+        "symbol": "||--o{",
+        "label": "uses"
+      },
+      {
+        "source": "REPAIR_REQUESTS",
+        "target": "EVALUATIONS",
+        "type": "one-to-zero-or-one",
+        "symbol": "||--o|",
+        "label": "has"
+      },
+      {
+        "source": "USERS",
+        "target": "PURCHASE_ORDERS",
+        "type": "one-to-many",
+        "symbol": "||--o{",
+        "label": "manages"
+      }
+    ]
+  }
+}
 ```
 
 ---
