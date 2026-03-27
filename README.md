@@ -288,7 +288,7 @@ flowchart TD
 ### 5.4 ER Diagram (Database Schema) 📊
 โครงสร้างข้อมูลบน **NoSQL Firestore**
 
-```mermaid
+```json
 {
   "er_diagram": {
     "entities": [
